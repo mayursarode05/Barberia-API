@@ -56,6 +56,7 @@ namespace Barberia.API.Controllers
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(newUser, isPersistent: false);
+                        await _userManager.AddToRoleAsync(newUser, "User"); 
                     }
                 }
                 else
