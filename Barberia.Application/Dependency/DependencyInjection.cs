@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Barberia.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Barberia.Application.Repositories.IRepositories;
+using Barberia.Application.Repositories;
+using Barberia.Application.Mapper;
+
 
 namespace Barberia.Application.Dependency
 {
@@ -15,10 +14,15 @@ namespace Barberia.Application.Dependency
         public static IServiceCollection AddApplicationDI(this IServiceCollection Services, IConfiguration configuration)
         {
             // Add SQL Server 
-            Services.AddDbContext<AppDbContext>(options =>
+            Services.AddDbContext<BarberiaDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            
+            Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
+            Services.AddAutoMapper(typeof(MappingProfiler));
+            
             return Services;
         }
     }
